@@ -24,6 +24,7 @@ public struct MainButtonStyle: ButtonStyle {
             .background(configuration.isPressed ? backgroundColor.opacity(0.6) : backgroundColor)
             .foregroundColor(textColor)
             .cornerRadius(16)
+            .scaleEffect(configuration.isPressed ? 0.98 : 1)
             .animation(.easeOut(duration: 0.1), value: configuration.isPressed)
     }
 }
