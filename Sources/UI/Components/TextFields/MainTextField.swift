@@ -17,7 +17,7 @@ public struct MainTextField: View {
         self.placeholder = placeholder
         self._text = text
     }
-    
+
     public var body: some View {
             VStack(alignment: .leading) {
                 if !text.isEmpty {
