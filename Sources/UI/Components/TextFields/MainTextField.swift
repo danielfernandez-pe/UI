@@ -26,7 +26,7 @@ public struct MainTextField: View {
                         .frame(width: contentSize.width * 0.8, alignment: .leading)
                         .matchedGeometryEffect(id: "placeholder", in: placeholderNamespace)
                 }
-                
+
                 ZStack(alignment: .leading) {
                     TextField("", text: $text)
                         .font(.body)
