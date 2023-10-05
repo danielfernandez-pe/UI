@@ -16,22 +16,27 @@ struct Spacing {
 }
 
 public extension CGFloat {
+    /// 4
     static var xSmall: CGFloat {
         Spacing.xSmall
     }
 
+    /// 8
     static var small: CGFloat {
         Spacing.small
     }
 
+    /// 16
     static var medium: CGFloat {
         Spacing.medium
     }
 
+    /// 24
     static var large: CGFloat {
         Spacing.large
     }
 
+    /// 32
     static var xLarge: CGFloat {
         Spacing.xLarge
     }
