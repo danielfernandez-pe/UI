@@ -44,7 +44,7 @@ public struct MainButtonStyle: ButtonStyle {
         configuration.label
             .font(Font(style.uiFont as CTFont))
             .padding()
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, minHeight: 48)
             .background(configuration.isPressed ? style.pressedBackgroundColor : style.backgroundColor)
             .foregroundColor(style.textColor)
             .cornerRadius(style.cornerRadius)
