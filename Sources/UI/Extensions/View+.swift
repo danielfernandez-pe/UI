@@ -8,6 +8,11 @@
 import SwiftUI
 
 extension View {
+    public func addShadow(color: Color) -> some View {
+        self
+            .shadow(color: color, radius: 16, x: 0, y: 4)
+    }
+
     public func readSize(onChange: @escaping (CGSize) -> Void) -> some View {
         background(
             GeometryReader { metrics in
