@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct MainButtonStyle: ButtonStyle {
+public struct MainButtonStyle<Content: View>: ButtonStyle {
     public struct Style {
         let textColor: Color
         let backgroundColor: Color
@@ -16,6 +16,7 @@ public struct MainButtonStyle: ButtonStyle {
         let cornerRadius: CGFloat
         let shouldScaleWhenPressed: Bool
         let isDark: Bool
+        let icon: (() -> Content)?
 
         public init(textColor: Color = .white,
                     backgroundColor: Color = .blue,
@@ -23,7 +24,8 @@ public struct MainButtonStyle: ButtonStyle {
                     uiFont: UIFont = .systemFont(ofSize: 16),
                     cornerRadius: CGFloat = 16,
                     shouldScaleWhenPressed: Bool = true,
-                    isDark: Bool = false) {
+                    isDark: Bool = false,
+                    icon: (() -> Content)?) {
             self.textColor = textColor
             self.backgroundColor = backgroundColor
             self.pressedBackgroundColor = pressedBackgroundColor
@@ -31,6 +33,7 @@ public struct MainButtonStyle: ButtonStyle {
             self.cornerRadius = cornerRadius
             self.shouldScaleWhenPressed = shouldScaleWhenPressed
             self.isDark = isDark
+            self.icon = icon
         }
     }
 
@@ -51,6 +54,10 @@ public struct MainButtonStyle: ButtonStyle {
             .scaleEffect(shouldScale(configuration: configuration) ? 0.98 : 1)
             .animation(.easeOut(duration: 0.1), value: configuration.isPressed)
             .if(style.isDark) { $0.environment(\.colorScheme, .dark) }
+            .overlay(alignment: .trailing) {
+                style.icon?()
+                    .padding(.trailing, .small)
+            }
     }
 
     private func shouldScale(configuration: Configuration) -> Bool {
