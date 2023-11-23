@@ -23,15 +23,8 @@ public struct AsyncButton<Label: View>: View {
         Button(
             action: {
                 Task {
-                    var progressViewTask: Task<Void, Error>?
-                    
-                    progressViewTask = Task {
-                        try await Task.sleep(nanoseconds: 150_000_000)
-                        showProgressView = true
-                    }
-                    
+                    showProgressView = true
                     await action()
-                    progressViewTask?.cancel()
                     showProgressView = false
                 }
             },
