@@ -9,10 +9,18 @@ import SwiftUI
 
 public struct CustomTextField: View {
     let placeholder: String
-    let style: TextFieldStyle
+    let style: Style
     @Binding var text: String
     @Namespace private var placeholderNamespace
     @FocusState private var focusedField: Bool
+    
+    public init(placeholder: String,
+                style: Style,
+                text: String) {
+        self.placeholder = placeholder
+        self.style = style
+        self.text = text
+    }
 
     public var body: some View {
             VStack(alignment: .leading) {
