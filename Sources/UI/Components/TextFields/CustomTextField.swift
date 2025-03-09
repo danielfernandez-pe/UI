@@ -16,10 +16,10 @@ public struct CustomTextField: View {
     
     public init(placeholder: String,
                 style: Style,
-                text: String) {
+                text: Binding<String>) {
         self.placeholder = placeholder
         self.style = style
-        self.text = text
+        self._text = text
     }
 
     public var body: some View {
