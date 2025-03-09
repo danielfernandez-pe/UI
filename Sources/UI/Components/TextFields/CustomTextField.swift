@@ -56,12 +56,20 @@ public struct CustomTextField: View {
 }
 
 extension CustomTextField {
-    public struct TextFieldStyle {
+    public struct Style {
         let borderColor: Color
         let focusedBorderColor: Color
         let placeholderColor: Color
         let icon: Image?
         let font: Font
+        
+        public init(borderColor: Color, focusedBorderColor: Color, placeholderColor: Color, icon: Image?, font: Font) {
+            self.borderColor = borderColor
+            self.focusedBorderColor = focusedBorderColor
+            self.placeholderColor = placeholderColor
+            self.icon = icon
+            self.font = font
+        }
     }
 }
 
