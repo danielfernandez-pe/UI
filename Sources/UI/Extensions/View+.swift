@@ -12,16 +12,6 @@ extension View {
         self
             .shadow(color: color, radius: 16, x: 0, y: 4)
     }
-
-    public func readSize(onChange: @escaping (CGSize) -> Void) -> some View {
-        background(
-            GeometryReader { metrics in
-                Color.clear
-                    .preference(key: SizePreferenceKey.self, value: metrics.size)
-            }
-        )
-        .onPreferenceChange(SizePreferenceKey.self, perform: onChange)
-    }
     
     public func frame(size: CGSize) -> some View {
         self
@@ -35,10 +25,4 @@ extension View {
             self
         }
     }
-}
-
-private struct SizePreferenceKey: PreferenceKey {
-    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {}
-
-    static var defaultValue: CGSize = .zero
 }
