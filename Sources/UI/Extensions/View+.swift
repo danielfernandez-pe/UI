@@ -25,4 +25,20 @@ extension View {
             self
         }
     }
+    
+    public func readSize(onChange: @escaping @Sendable (CGSize) -> Void) -> some View {
+        background(
+            GeometryReader { metrics in
+                Color.clear
+                    .preference(key: SizePreferenceKey.self, value: metrics.size)
+            }
+        )
+        .onPreferenceChange(SizePreferenceKey.self, perform: onChange)
+    }
+}
+
+private struct SizePreferenceKey: PreferenceKey {
+    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {}
+
+    static let defaultValue: CGSize = .zero
 }
