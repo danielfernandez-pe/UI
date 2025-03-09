@@ -29,6 +29,7 @@ public struct CustomTextField: View {
                         .font(style.font)
                         .foregroundStyle(style.placeholderColor)
                         .matchedGeometryEffect(id: "placeholder", in: placeholderNamespace)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 
                 HStack(spacing: .small) {
@@ -44,9 +45,11 @@ public struct CustomTextField: View {
                     
                         if text.isEmpty {
                             Text(placeholder)
-                                .font(.body)
+                                .font(style.font)
+                                .foregroundStyle(style.placeholderColor)
                                 .matchedGeometryEffect(id: "placeholder", in: placeholderNamespace)
                                 .allowsHitTesting(false)
+                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
                     }
                 }
