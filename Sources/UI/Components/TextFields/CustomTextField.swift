@@ -10,15 +10,18 @@ import SwiftUI
 public struct CustomTextField: View {
     let placeholder: String
     let style: Style
+    let isSecure: Bool
     @Binding var text: String
     @Namespace private var placeholderNamespace
     @FocusState private var focusedField: Bool
     
     public init(placeholder: String,
                 style: Style,
+                isSecure: Bool,
                 text: Binding<String>) {
         self.placeholder = placeholder
         self.style = style
+        self.isSecure = isSecure
         self._text = text
     }
 
@@ -39,10 +42,16 @@ public struct CustomTextField: View {
                     }
                     
                     ZStack(alignment: .leading) {
-                        TextField("", text: $text)
-                            .font(style.font)
-                            .frame(maxWidth: .infinity, minHeight: 36)
-                            .focused($focusedField)
+                        Group {
+                            if isSecure {
+                                SecureField("", text: $text)
+                            } else {
+                                TextField("", text: $text)
+                            }
+                        }
+                        .font(style.font)
+                        .frame(maxWidth: .infinity, minHeight: 36)
+                        .focused($focusedField)
                     
                         if text.isEmpty {
                             Text(placeholder)
@@ -102,6 +111,7 @@ extension CustomTextField {
                 placeholderColor: .gray,
                 font: .body
             ),
+            isSecure: false,
             text: .constant("Some text")
         )
         
@@ -114,6 +124,7 @@ extension CustomTextField {
                 font: .body,
                 icon: Image(systemName: "person.fill")
             ),
+            isSecure: false,
             text: .constant("")
         )
         
@@ -127,6 +138,7 @@ extension CustomTextField {
                 icon: Image(systemName: "lock.fill"),
                 iconColor: .red
             ),
+            isSecure: true,
             text: .constant("")
         )
     }
