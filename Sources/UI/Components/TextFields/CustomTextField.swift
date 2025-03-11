@@ -15,19 +15,40 @@ public struct CustomTextField: View {
     @Namespace private var placeholderNamespace
     @FocusState private var focusedField: Bool
     
+    // isValid logic
+    @Environment(\.isMandatory) var isMandatory
+    @Environment(\.validationHandler) var validationHandler
+    @State private var isValid = true {
+        didSet {
+            isValidBinding = isValid
+        }
+    }
+    
+    @State private var validationMessage: String = ""
+    @Binding private var isValidBinding: Bool
+    
     public init(placeholder: String,
                 style: Style,
                 isSecure: Bool,
-                text: Binding<String>) {
+                text: Binding<String>,
+                isValid isValidBinding: Binding<Bool>? = nil) {
         self.placeholder = placeholder
         self.style = style
         self.isSecure = isSecure
         self._text = text
+        self._isValidBinding = isValidBinding ?? .constant(true)
     }
 
     public var body: some View {
             VStack(alignment: .leading) {
-                if !text.isEmpty {
+                if !isValid {
+                    Text(validationMessage)
+                        .font(style.font)
+                        .foregroundStyle(.red)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                
+                if !text.isEmpty, isValid {
                     Text(placeholder)
                         .font(style.font)
                         .foregroundStyle(style.placeholderColor)
@@ -52,6 +73,12 @@ public struct CustomTextField: View {
                         .font(style.font)
                         .frame(maxWidth: .infinity, minHeight: 36)
                         .focused($focusedField)
+                        .onAppear {
+                            validate(text)
+                        }
+                        .onChange(of: text) { _, newValue in
+                            validate(newValue)
+                        }
                     
                         if text.isEmpty {
                             Text(placeholder)
@@ -73,6 +100,29 @@ public struct CustomTextField: View {
                 }
         }
         .animation(.easeInOut, value: text)
+    }
+    
+    private func validate(_ value: String) {
+        isValid = true
+        
+        if isMandatory {
+            isValid = !value.isEmpty
+            validationMessage = isValid ? "" : "This is a mandatory field"
+        }
+        
+        if isValid {
+            guard let validationHandler = validationHandler else { return }
+            let validationResult = validationHandler(value)
+            
+            switch validationResult {
+            case .success:
+                isValid = true
+                validationMessage = ""
+            case .failure(let error):
+                isValid = false
+                validationMessage = error.errorDescription ?? ""
+            }
+        }
     }
 }
 
@@ -127,6 +177,7 @@ extension CustomTextField {
             isSecure: false,
             text: .constant("")
         )
+        .isMandatory()
         
         CustomTextField(
             placeholder: "Password",
