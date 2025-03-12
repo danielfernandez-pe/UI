@@ -9,10 +9,12 @@ import SwiftUI
 
 public enum ValidationError: Error, LocalizedError {
     case isNotEmail
+    case custom(String)
     
     public var errorDescription: String? {
         switch self {
         case .isNotEmail: return "Not a valid email"
+        case .custom(let error): return error
         }
     }
 }

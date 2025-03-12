@@ -73,9 +73,6 @@ public struct CustomTextField: View {
                         .font(style.font)
                         .frame(maxWidth: .infinity, minHeight: 36)
                         .focused($focusedField)
-                        .onAppear {
-                            validate(text)
-                        }
                         .onChange(of: text) { _, newValue in
                             validate(newValue)
                         }
