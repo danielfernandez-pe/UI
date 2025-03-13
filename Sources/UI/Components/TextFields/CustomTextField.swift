@@ -12,7 +12,7 @@ public struct CustomTextField: View {
     let style: Style
     let isSecure: Bool
     @Binding var text: String
-    @Namespace private var placeholderNamespace
+//    @Namespace private var placeholderNamespace
     @FocusState private var focusedField: Bool
     
     // isValid logic
@@ -52,7 +52,7 @@ public struct CustomTextField: View {
                     Text(placeholder)
                         .font(style.font)
                         .foregroundStyle(style.placeholderColor)
-                        .matchedGeometryEffect(id: "placeholder", in: placeholderNamespace)
+//                        .matchedGeometryEffect(id: "placeholder", in: placeholderNamespace)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 
