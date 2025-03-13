@@ -81,7 +81,7 @@ public struct CustomTextField: View {
                             Text(placeholder)
                                 .font(style.font)
                                 .foregroundStyle(style.placeholderColor)
-                                .matchedGeometryEffect(id: "placeholder", in: placeholderNamespace)
+//                                .matchedGeometryEffect(id: "placeholder", in: placeholderNamespace)
                                 .allowsHitTesting(false)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }
