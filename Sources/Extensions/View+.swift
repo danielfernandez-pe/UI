@@ -8,9 +8,9 @@
 import SwiftUI
 
 extension View {
-    public func addShadow(color: Color) -> some View {
+    public func addShadow(color: Color = Color.black.opacity(0.16)) -> some View {
         self
-            .shadow(color: color, radius: 16, x: 0, y: 4)
+            .shadow(color: color, radius: 8, x: 0, y: 4)
     }
     
     public func frame(size: CGSize) -> some View {
