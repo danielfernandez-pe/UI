@@ -10,6 +10,8 @@ import SwiftUI
 struct ToastModifier: ViewModifier {
     @Binding var message: String?
     private let status: ToastStatus
+    @State private var offset = CGSize.zero
+    @State private var timerTask: Task<Void, Error>? = nil
     
     public init(message: Binding<String?>, status: ToastStatus) {
         self._message = message
@@ -24,6 +26,40 @@ struct ToastModifier: ViewModifier {
                 .opacity(message == nil ? 0 : 1)
                 .offset(y: message == nil ? 200 : 0)
                 .animation(.spring(response: 0.3, dampingFraction: 0.6), value: message)
+                .offset(y: offset.height > 0 ? offset.height : 0)
+                .gesture(
+                    DragGesture()
+                        .onChanged { gesture in
+                            offset = gesture.translation
+                        }
+                        .onEnded { _ in
+                            if offset.height > 50 {
+                                timerTask?.cancel()
+                                timerTask = nil
+                                message = nil
+                            }
+                            
+                            offset = .zero
+                        }
+                )
+                .animation(.spring(response: 0.3, dampingFraction: 0.6), value: offset)
+                .onChange(of: message) { _, _ in
+                    guard message != nil else {
+                        return
+                    }
+                    timerTask?.cancel()
+                    timerTask = nil
+                    
+                    timerTask = Task {
+                        try? await Task.sleep(for: .seconds(3))
+                        
+                        if !Task.isCancelled, self.message != nil {
+                            await MainActor.run {
+                                self.message = nil
+                            }
+                        }
+                    }
+                }
         }
     }
 }
