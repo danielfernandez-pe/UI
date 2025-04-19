@@ -12,6 +12,7 @@ public struct MainButtonStyle<Content: View>: ButtonStyle {
         let textColor: Color
         let backgroundColor: Color
         let pressedBackgroundColor: Color
+        let disabledBackgroundColor: Color
         let uiFont: UIFont
         let cornerRadius: CGFloat
         let shouldScaleWhenPressed: Bool
@@ -21,6 +22,7 @@ public struct MainButtonStyle<Content: View>: ButtonStyle {
         public init(textColor: Color = .white,
                     backgroundColor: Color = .blue,
                     pressedBackgroundColor: Color = Color.blue.opacity(0.6),
+                    disabledBackgroundColor: Color = Color.blue.opacity(0.3),
                     uiFont: UIFont = .systemFont(ofSize: 16),
                     cornerRadius: CGFloat = 16,
                     shouldScaleWhenPressed: Bool = true,
@@ -29,6 +31,7 @@ public struct MainButtonStyle<Content: View>: ButtonStyle {
             self.textColor = textColor
             self.backgroundColor = backgroundColor
             self.pressedBackgroundColor = pressedBackgroundColor
+            self.disabledBackgroundColor = disabledBackgroundColor
             self.uiFont = uiFont
             self.cornerRadius = cornerRadius
             self.shouldScaleWhenPressed = shouldScaleWhenPressed
@@ -38,6 +41,7 @@ public struct MainButtonStyle<Content: View>: ButtonStyle {
     }
 
     private let style: Style
+    @Environment(\.isEnabled) var isEnabled
 
     public init(style: Style) {
         self.style = style
@@ -48,7 +52,17 @@ public struct MainButtonStyle<Content: View>: ButtonStyle {
             .font(Font(style.uiFont as CTFont))
             .padding()
             .frame(maxWidth: .infinity, minHeight: 48)
-            .background(configuration.isPressed ? style.pressedBackgroundColor : style.backgroundColor)
+            .background(
+                Group {
+                    if !isEnabled {
+                        style.disabledBackgroundColor
+                    } else if configuration.isPressed {
+                        style.pressedBackgroundColor
+                    } else {
+                        style.backgroundColor
+                    }
+                }
+            )
             .foregroundColor(style.textColor)
             .cornerRadius(style.cornerRadius)
             .scaleEffect(shouldScale(configuration: configuration) ? 0.98 : 1)
